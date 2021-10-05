@@ -8,5 +8,12 @@ const useStyles = makeStyles({
       marginLeft: 10,
     },
   },
+  main: {
+    minHeight: '80vh',
+  },
+  footer: {
+    textAlign: 'center',
+    marginTop: 10,
+  }
 })
 export default useStyles;

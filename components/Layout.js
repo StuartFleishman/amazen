@@ -15,7 +15,7 @@ export default function Layout({children}) {
           <Typography>amazen</Typography>
         </Toolbar>
       </AppBar>
-      <Container>
+      <Container className={classes.main}>
         {children}
       </Container>
       <footer>
