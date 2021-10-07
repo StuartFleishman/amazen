@@ -4,6 +4,7 @@ import Image from 'next/image';
 import data from '../../utils/data';
 import Layout from '../../components/Layout';
 import {
+  Button,
   Grid,
   Link,
   List,
@@ -23,7 +24,7 @@ export default function ProductScreen() {
     return <div>Product Not Found</div>;
   }
   return (
-    <Layout title={product.name}>
+    <Layout title={product.name} description={product.description}>
       <div className={classes.section}>
         <NextLink href="/" passHref>
           <Link>
@@ -83,9 +84,16 @@ export default function ProductScreen() {
                     <Typography>Status</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography>{product.countInStock > 0 ? 'In Stock': 'Out of Stock'}</Typography>
+                    <Typography>
+                      {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+                    </Typography>
                   </Grid>
                 </Grid>
+              </ListItem>
+              <ListItem>
+                <Button fullWidth variant="contained" color="primary" >
+                  Add to Cart
+                  </Button>
               </ListItem>
             </List>
           </Card>
