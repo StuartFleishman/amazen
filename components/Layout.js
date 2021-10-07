@@ -7,10 +7,28 @@ import {
   Toolbar,
   Typography,
   Link,
+  createTheme,
+  ThemeProvider,
+  CssBaseline,
 } from '@material-ui/core';
 import useStyles from '../utils/styles';
 
 export default function Layout({ title, children, description }) {
+  const theme = createTheme({
+    typography: {
+      h1: {
+        fontSize: '2.8rem',
+        fontWeight: 800,
+        margin: '1rem 0',
+      },
+      h2: {
+        fontSize: '1.4rem',
+        fontWeight: 400,
+        margin: '1rem 0',
+      },
+    },
+  })
+
   const classes = useStyles();
   return (
     <div>
@@ -18,6 +36,8 @@ export default function Layout({ title, children, description }) {
         <title>{title ? `${title} - Amazen` : 'amazen'}</title>
         {description && <meta name="description" content={description}></meta>}
       </Head>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
       <AppBar position="static" className={classes.navbar}>
         <Toolbar>
           <NextLink href="/" passHref>
@@ -40,6 +60,7 @@ export default function Layout({ title, children, description }) {
       <footer className={classes.footer}>
         <Typography>copyright amazen</Typography>
       </footer>
+      </ThemeProvider>
     </div>
   );
 }
