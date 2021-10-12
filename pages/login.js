@@ -6,13 +6,28 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
 import NextLink from 'next/link';
 import axios from 'axios';
+import { Store } from '../utils/Store';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+
 
 export default function Login() {
+  const { dispatch, state } = useContext(Store);
+  const { userInfo } = state;
+  const router = useRouter();
+  const { redirect } = router.query
+
+  useEffect(() => {
+    if (userInfo) {
+      router.push('/');
+    }
+  }, []);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const classes = useStyles();
@@ -23,9 +38,11 @@ export default function Login() {
         email,
         password,
       });
-      alert('sucess login')
+      dispatch({ type: 'USER_LOGIN', payload: data });
+      Cookies.set('userInfo', data);
+      router.push(redirect || '/')
     } catch (err) {
-      alert(err.response.data? err.response.data.message : err.message);
+      alert(err.message);
     }
   };
   return (
