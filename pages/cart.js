@@ -36,6 +36,9 @@ function CartScreen() {
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
   };
+  const removeItemHandler = (item) => {
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
   return (
     <Layout title="Shopping Cart">
       <Typography component="h1" variant="h1">
@@ -130,7 +133,12 @@ function CartScreen() {
               </List>
 
               <ListItem>
-                <Button variant="contained" color="primary" fullWidth>
+                <Button
+                  onClick={() => removeItemHandler(item)}
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                >
                   Check Out
                 </Button>
               </ListItem>
