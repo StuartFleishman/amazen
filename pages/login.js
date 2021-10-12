@@ -13,12 +13,21 @@ import NextLink from 'next/link';
 import axios from 'axios';
 
 export default function Login() {
-  onst [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const classes = useStyles();
   const submitHandler = async (e) => {
-    e.preventDefault()
-    const {data} = await axios.post('/api/users/login', {email, password})
-  }
+    e.preventDefault();
+    try {
+      const { data } = await axios.post('/api/users/login', {
+        email,
+        password,
+      });
+      alert('sucess login')
+    } catch (err) {
+      alert(err.response.data? err.response.data.message : err.message);
+    }
+  };
   return (
     <Layout title="Login">
       <form onSubmit={submitHandler} className={classes.form}>
@@ -33,6 +42,7 @@ export default function Login() {
               fullWidth
               id="email"
               label="Email"
+              onChange={(e) => setEmail(e.target.value)}
             ></TextField>
           </ListItem>
           <ListItem>
@@ -42,6 +52,7 @@ export default function Login() {
               fullWidth
               id="password"
               label="Password"
+              onChange={(e) => setPassword(e.target.value)}
             ></TextField>
           </ListItem>
           <ListItem>
