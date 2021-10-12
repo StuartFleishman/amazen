@@ -22,15 +22,17 @@ import Layout from '../components/Layout';
 import NextLink from 'next/link';
 import { Store } from '../utils/Store';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 function CartScreen() {
   const { state, dispatch } = useContext(Store);
+  const router = useRouter()
   const {
     cart: { cartItems },
   } = state;
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock <= 0) {
+    if (data.countInStock < quantity) {
       window.alert('Sorry. Product is out of stock');
       return;
     }
@@ -39,6 +41,9 @@ function CartScreen() {
   const removeItemHandler = (item) => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
+  const checkoutHandler = () => {
+    router.push('/shipping')
+  }
   return (
     <Layout title="Shopping Cart">
       <Typography component="h1" variant="h1">
@@ -134,7 +139,7 @@ function CartScreen() {
 
               <ListItem>
                 <Button
-                  onClick={() => removeItemHandler(item)}
+                  onClick={checkoutHandler}
                   variant="contained"
                   color="primary"
                   fullWidth
