@@ -12,9 +12,28 @@ import {
 import NextLink from 'next/link';
 import db from '../utils/db';
 import Product from '../models/Product';
+import { useContext } from 'react';
+import { Store } from '../utils/Store';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function Home(props) {
   const { products } = props;
+  const { state, dispatch } = useContext(Store);
+  const router = useRouter();
+
+  const addToCartHandler = async (product) => {
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (data.countInStock <= 0) {
+      window.alert('Sorry. Product is out of stock');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity} });
+    router.push('/cart')
+  };
 
   return (
     <>
@@ -23,7 +42,7 @@ export default function Home(props) {
           <h1>Products</h1>
           <Grid container spacing={3}>
             {products.map((product) => (
-              <Grid item md={4} key={product.name}>
+              <Grid item md={4} xs={12} key={product.name}>
                 <Card>
                   <NextLink href={`/product/${product.slug}`} passHref>
                     <CardActionArea>
@@ -39,7 +58,11 @@ export default function Home(props) {
                   </NextLink>
                   <CardActions>
                     <Typography>${product.price}</Typography>
-                    <Button size="small" color="primary">
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() => addToCartHandler(product)}
+                    >
                       Add to Cart
                     </Button>
                   </CardActions>
@@ -59,7 +82,7 @@ export async function getServerSideProps() {
   await db.disconnect();
   return {
     props: {
-      products: products.map(db.convertDocToObj)
+      products: products.map(db.convertDocToObj),
     },
   };
 }
