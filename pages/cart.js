@@ -12,21 +12,30 @@ import {
   MenuItem,
   Button,
   Card,
-  ListItem, 
-  List, 
+  ListItem,
+  List,
 } from '@material-ui/core';
 import React, { useContext } from 'react';
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Layout from '../components/Layout';
 import NextLink from 'next/link';
 import { Store } from '../utils/Store';
+import axios from 'axios';
 
 function CartScreen() {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
   } = state;
+  const updateCartHandler = async (item, quantity) => {
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock <= 0) {
+      window.alert('Sorry. Product is out of stock');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+  };
   return (
     <Layout title="Shopping Cart">
       <Typography component="h1" variant="h1">
@@ -54,16 +63,17 @@ function CartScreen() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartItems.map( item => (
+                  {cartItems.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell>
                         <NextLink href={`/product/${item.slug}`} passHref>
                           <Link>
-                            <Image src={item.image}
-                            alt={item.name}
-                            width={50}
-                            height={50}>
-                            </Image>
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              width={50}
+                              height={50}
+                            ></Image>
                           </Link>
                         </NextLink>
                       </TableCell>
@@ -112,14 +122,17 @@ function CartScreen() {
               <List>
                 <ListItem>
                   <Typography variant="h2">
-                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)} {''} items) : 
-                    ${cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
+                    {''} items) : $
+                    {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                   </Typography>
                 </ListItem>
               </List>
 
               <ListItem>
-                <Button variant="contained" color="primary" fullWidth>Check Out</Button>
+                <Button variant="contained" color="primary" fullWidth>
+                  Check Out
+                </Button>
               </ListItem>
             </Card>
           </Grid>
