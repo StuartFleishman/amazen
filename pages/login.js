@@ -6,16 +6,22 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
 import NextLink from 'next/link';
+import axios from 'axios';
 
 export default function Login() {
+  onst [email, setEmail] = useState('')
   const classes = useStyles();
+  const submitHandler = async (e) => {
+    e.preventDefault()
+    const {data} = await axios.post('/api/users/login', {email, password})
+  }
   return (
     <Layout title="Login">
-      <form className={classes.form}>
+      <form onSubmit={submitHandler} className={classes.form}>
         <Typography component="h1" variant="h1" align="center">
           Login
         </Typography>
