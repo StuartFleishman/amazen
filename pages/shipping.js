@@ -50,10 +50,10 @@ export default function Shipping() {
     router.push('/payment');
   };
   return (
-    <Layout title="Shipping">
+    <Layout title="Shipping Address">
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h1">
-          Shipping
+          Shipping Address
         </Typography>
         <List>
           <ListItem>
@@ -185,8 +185,8 @@ export default function Shipping() {
                   label="Country"
                   error={Boolean(errors.country)}
                   helperText={
-                    errors.fullName
-                      ? errors.fullName.type === 'minLength'
+                    errors.country
+                      ? errors.country.type === 'minLength'
                         ? 'Country length must be more than 1'
                         : 'Country is required'
                       : ''
