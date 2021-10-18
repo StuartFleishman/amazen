@@ -15,6 +15,7 @@ import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { Controller, useForm } from 'react-hook-form';
+import { useSnackbar } from 'notistack';
 
 export default function Login() {
   const {
@@ -22,6 +23,7 @@ export default function Login() {
     control,
     formState: { errors },
   } = useForm();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { dispatch, state } = useContext(Store);
   const { userInfo } = state;
   const router = useRouter();
@@ -44,7 +46,7 @@ export default function Login() {
       Cookies.set('userInfo', data);
       router.push(redirect || '/');
     } catch (err) {
-      alert(err.message);
+      enqueueSnackbar(err.response.data ? err.response.data.message : err.message, { variant: 'error' });
     }
   };
   return (
@@ -94,7 +96,7 @@ export default function Login() {
               }}
               render={({ field }) => (
                 <TextField
-                  inputProps={{ type: 'email' }}
+                  inputProps={{ type: 'password' }}
                   variant="outlined"
                   fullWidth
                   id="password"
@@ -103,7 +105,7 @@ export default function Login() {
                   helperText={
                     errors.password
                       ? errors.password.type === 'minLength'
-                        ? 'Password length at least 6 characters'
+                        ? 'Password must be at least 6 characters'
                         : 'Password is required'
                       : ''
                   }
