@@ -14,13 +14,18 @@ import axios from 'axios';
 import { Store } from '../utils/Store';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-
+import { Controller, useForm } from 'react-hook-form';
 
 export default function Login() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
   const { dispatch, state } = useContext(Store);
   const { userInfo } = state;
   const router = useRouter();
-  const { redirect } = router.query
+  const { redirect } = router.query;
 
   useEffect(() => {
     if (userInfo) {
@@ -28,11 +33,8 @@ export default function Login() {
     }
   }, []);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const classes = useStyles();
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const submitHandler = async ({ email, password }) => {
     try {
       const { data } = await axios.post('/api/users/login', {
         email,
@@ -40,37 +42,75 @@ export default function Login() {
       });
       dispatch({ type: 'USER_LOGIN', payload: data });
       Cookies.set('userInfo', data);
-      router.push(redirect || '/')
+      router.push(redirect || '/');
     } catch (err) {
       alert(err.message);
     }
   };
   return (
     <Layout title="Login">
-      <form onSubmit={submitHandler} className={classes.form}>
+      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h1" align="center">
           Login
         </Typography>
         <List>
           <ListItem>
-            <TextField
-              inputProps={{ type: 'email' }}
-              variant="outlined"
-              fullWidth
-              id="email"
-              label="Email"
-              onChange={(e) => setEmail(e.target.value)}
-            ></TextField>
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: true,
+                pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+              }}
+              render={({ field }) => (
+                <TextField
+                  inputProps={{ type: 'email' }}
+                  variant="outlined"
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  error={Boolean(errors.email)}
+                  helperText={
+                    errors.email
+                      ? errors.email.type === 'pattern'
+                        ? 'Email is not valid'
+                        : 'Email is required'
+                      : ''
+                  }
+                  {...field}
+                ></TextField>
+              )}
+            ></Controller>
           </ListItem>
           <ListItem>
-            <TextField
-              inputProps={{ type: 'password' }}
-              variant="outlined"
-              fullWidth
-              id="password"
-              label="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            ></TextField>
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: true,
+                minLength: 6,
+              }}
+              render={({ field }) => (
+                <TextField
+                  inputProps={{ type: 'email' }}
+                  variant="outlined"
+                  fullWidth
+                  id="password"
+                  label="Password"
+                  error={Boolean(errors.password)}
+                  helperText={
+                    errors.password
+                      ? errors.password.type === 'minLength'
+                        ? 'Password length at least 6 characters'
+                        : 'Password is required'
+                      : ''
+                  }
+                  {...field}
+                ></TextField>
+              )}
+            ></Controller>
           </ListItem>
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
