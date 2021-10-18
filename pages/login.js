@@ -6,7 +6,7 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
 import NextLink from 'next/link';
@@ -37,6 +37,7 @@ export default function Login() {
 
   const classes = useStyles();
   const submitHandler = async ({ email, password }) => {
+    closeSnackbar();
     try {
       const { data } = await axios.post('/api/users/login', {
         email,
