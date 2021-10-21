@@ -1,7 +1,8 @@
-import { createContext, useReducer } from 'react';
 import Cookies from 'js-cookie';
+import { createContext, useReducer } from 'react';
 
 export const Store = createContext();
+
 
 const initialState = {
   darkMode: Cookies.get('darkMode') === 'ON' ? true : false,
@@ -10,10 +11,15 @@ const initialState = {
       ? JSON.parse(Cookies.get('cartItems'))
       : [],
     shippingAddress: Cookies.get('shippingAddress')
-      ? JSON.parse(JSON.stringify(Cookies.get('shippingAddress')))
-      : {},
+      ? Cookies.get('shippingAddress')
+      : { location: {} },
+    paymentMethod: Cookies.get('paymentMethod')
+      ? Cookies.get('paymentMethod')
+      : '',
   },
-  userInfo: Cookies.get('userInfo') ? JSON.parse(JSON.stringify(Cookies.get('userInfo'))) : null,
+  userInfo: Cookies.get('userInfo')
+    ? Cookies.get('userInfo')
+    : null,
 };
 
 function reducer(state, action) {
@@ -45,8 +51,21 @@ function reducer(state, action) {
     case 'SAVE_SHIPPING_ADDRESS':
       return {
         ...state,
-        cart: { ...state.cart, shippingAddress: action.payload },
+        cart: {
+          ...state.cart,
+          shippingAddress: {
+            ...state.cart.shippingAddress,
+            ...action.payload,
+          },
+        },
       };
+    case 'SAVE_PAYMENT_METHOD':
+      return {
+        ...state,
+        cart: { ...state.cart, paymentMethod: action.payload },
+      };
+    case 'CART_CLEAR':
+      return { ...state, cart: { ...state.cart, cartItems: [] } };
     case 'USER_LOGIN':
       return { ...state, userInfo: action.payload };
     case 'USER_LOGOUT':
@@ -55,8 +74,11 @@ function reducer(state, action) {
         userInfo: null,
         cart: {
           cartItems: [],
+          shippingAddress: { location: {} },
+          paymentMethod: '',
         },
       };
+
     default:
       return state;
   }
@@ -67,3 +89,8 @@ export function StoreProvider(props) {
   const value = { state, dispatch };
   return <Store.Provider value={value}>{props.children}</Store.Provider>;
 }
+
+
+
+
+
