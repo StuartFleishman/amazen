@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import dynamic from 'next/dynamic';
 import Layout from '../../components/Layout';
 import { Store } from '../../utils/Store';
@@ -29,10 +29,24 @@ import { useSnackbar } from 'notistack';
 
 import Cookies from 'js-cookie';
 
-function Order() {
+function reducer(state, action) {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true, error: '' };
+    case 'FETCH_SUCCESS':
+      return { ...state, loading: false, order: action.payload, error: '' };
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+    default:
+      state;
+  }
+}
+
+function Order({ params }) {
+  const orderId = params.id;
   const classes = useStyles();
   const router = useRouter();
-  const { state, dispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const {
     userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
@@ -45,60 +59,43 @@ function Order() {
   const taxPrice = round2(itemsPrice * 0.15);
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
-
+  const [{ loading, error, order }, dispatch] = useReducer(reducer, {
+    loading: true,
+    order: {},
+    error: '',
+  });
 
   useEffect(() => {
     if (!userInfo) {
-      return router.push('/login')
+      return router.push('/login');
     }
     const fetchOrder = async () => {
       try {
-        dispatch({type: 'FETCH_REQUEST'})
-        const {data} = await axios.get(`/api/orders/${orderId}`)
-      } catch(err) {
-
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/orders/${orderId}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        dispatch({ type: 'FETCH_SUCESS', payload: data });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
+    };
+    if (!order || (order && order._id !== orderId)) {
+      fetchOrder();
     }
-  }, []);
+  }, [order]);
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
-  const placeOrderHandler = async () => {
-    closeSnackbar();
-    try {
-      setLoading(true);
-      const { data } = await axios.post(
-        '/api/orders',
-        {
-          orderItems: cartItems,
-          shippingAddress,
-          paymentMethod,
-          itemsPrice,
-          shippingPrice,
-          taxPrice,
-          totalPrice,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
-      dispatch({ type: 'CART_CLEAR' });
-      Cookies.remove('cartItems');
-      setLoading(false);
-      router.push(`/order/${data._id}`);
-    } catch (err) {
-      setLoading(false);
-      enqueueSnackbar(getError(err), { variant: 'error' });
-    }
-  };
+
+ 
   return (
-    <Layout title="Place Order">
+    <Layout title={`Order ${orderId}`}>
       <CheckoutWizard activeStep={3}></CheckoutWizard>
       <Typography component="h1" variant="h1">
-        Place Order
+        Order {orderId}
       </Typography>
-
+      {loading ? (<CircularProgress />)
+      : error? (<Typography>{error}</Typography>)
+      : (
       <Grid container spacing={1}>
         <Grid item md={9} xs={12}>
           <Card className={classes.section}>
@@ -235,6 +232,7 @@ function Order() {
           </Card>
         </Grid>
       </Grid>
+      )}
     </Layout>
   );
 }
