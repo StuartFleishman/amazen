@@ -76,7 +76,7 @@ function reducer(state, action) {
         userInfo: null,
         cart: {
           cartItems: [],
-          shippingAddress: { location: {} },
+          shippingAddress: {},
           paymentMethod: '',
         },
       };

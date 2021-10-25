@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import Layout from '../components/Layout';
-import { Store } from '../utils/Store';
+import Layout from '../../components/Layout';
+import { Store } from '../../utils/Store';
 import NextLink from 'next/link';
 import Image from 'next/image';
-import { getError } from '../utils/error';
+import { getError } from '../../utils/error';
 import {
   Grid,
   TableContainer,
@@ -23,13 +23,13 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import useStyles from '../utils/styles';
-import CheckoutWizard from '../components/CheckoutWizard';
+import useStyles from '../../utils/styles';
+import CheckoutWizard from '../../components/CheckoutWizard';
 import { useSnackbar } from 'notistack';
 
 import Cookies from 'js-cookie';
 
-function PlaceOrder() {
+function Order() {
   const classes = useStyles();
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
@@ -37,7 +37,7 @@ function PlaceOrder() {
     userInfo,
     cart: { cartItems, shippingAddress, paymentMethod },
   } = state;
-  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+  const round2 = (num) => Math.round(num * 100) / 100;
   const itemsPrice = round2(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
   );
@@ -45,14 +45,19 @@ function PlaceOrder() {
   const taxPrice = round2(itemsPrice * 0.15);
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
-  console.log(shippingAddress)
+
 
   useEffect(() => {
-    if (!shippingAddress) {
-      router.push('/shipping');
+    if (!userInfo) {
+      return router.push('/login')
     }
-    if (cartItems.length === 0) {
-      router.push('/cart');
+    const fetchOrder = async () => {
+      try {
+        dispatch({type: 'FETCH_REQUEST'})
+        const {data} = await axios.get(`/api/orders/${orderId}`)
+      } catch(err) {
+
+      }
     }
   }, []);
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
@@ -226,21 +231,6 @@ function PlaceOrder() {
                   </Grid>
                 </Grid>
               </ListItem>
-              <ListItem>
-                <Button
-                  onClick={placeOrderHandler}
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                >
-                  Place Order
-                </Button>
-              </ListItem>
-              {loading && (
-                <ListItem>
-                  <CircularProgress />
-                </ListItem>
-              )}
             </List>
           </Card>
         </Grid>
@@ -249,4 +239,8 @@ function PlaceOrder() {
   );
 }
 
-export default dynamic(() => Promise.resolve(PlaceOrder), { ssr: false });
+export async function getServerSideProps({ params }) {
+  return { props: { params } };
+}
+
+export default dynamic(() => Promise.resolve(Order), { ssr: false });
