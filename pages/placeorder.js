@@ -45,7 +45,7 @@ function PlaceOrder() {
   const taxPrice = round2(itemsPrice * 0.15);
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
-  console.log(shippingAddress)
+  
 
   useEffect(() => {
     if (!shippingAddress) {

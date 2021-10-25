@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Layout from '../../components/Layout';
 import { Store } from '../../utils/Store';
 import NextLink from 'next/link';
 import Image from 'next/image';
-import { getError } from '../../utils/error';
 import {
   Grid,
   TableContainer,
@@ -26,7 +25,7 @@ import { useRouter } from 'next/router';
 import useStyles from '../../utils/styles';
 import CheckoutWizard from '../../components/CheckoutWizard';
 import { useSnackbar } from 'notistack';
-
+import { getError } from '../../utils/error';
 import Cookies from 'js-cookie';
 
 function reducer(state, action) {
@@ -78,7 +77,7 @@ function Order({ params }) {
         const { data } = await axios.get(`/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
-        dispatch({ type: 'FETCH_SUCESS', payload: data });
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
@@ -114,6 +113,12 @@ function Order({ params }) {
                   {shippingAddress.city}, {shippingAddress.postalCode},{' '}
                   {shippingAddress.country}
                 </ListItem>
+                <ListItem>
+                  Status:{' '}
+                  {isDelivered
+                    ? `delivered at ${deliveredAt}`
+                    : 'not delivered'}
+                </ListItem>
               </List>
             </Card>
             <Card className={classes.section}>
@@ -124,6 +129,9 @@ function Order({ params }) {
                   </Typography>
                 </ListItem>
                 <ListItem>{paymentMethod}</ListItem>
+                <ListItem>
+                  Status: {isPaid ? `paid at ${paidAt}` : 'not paid'}
+                </ListItem>
               </List>
             </Card>
             <Card className={classes.section}>
