@@ -83,7 +83,7 @@ function Order({ params }) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
-    if (!order || (order && order._id !== orderId)) {
+    if (!order._id || (order._id && order._id !== orderId)) {
       fetchOrder();
     }
   }, [order]);
