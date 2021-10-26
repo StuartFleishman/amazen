@@ -134,6 +134,13 @@ export default function Layout({ title, children, description }) {
                     >
                       Profile
                     </MenuItem>
+                    <MenuItem
+                      onClick={(e) =>
+                        loginMenuCloseHandler(e, '/order-history')
+                      }
+                    >
+                      Order Hisotry
+                    </MenuItem>
            
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>
