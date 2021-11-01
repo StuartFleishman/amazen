@@ -64,7 +64,7 @@ function AdminDashboard() {
     fetchData();
   }, []);
   return (
-    <Layout title="Order History">
+    <Layout title="Admin Dashboard">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
@@ -77,6 +77,16 @@ function AdminDashboard() {
               <NextLink href="/admin/orders" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="Orders"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/products" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Products"></ListItemText>
+                </ListItem>
+              </NextLink>
+              <NextLink href="/admin/users" passHref>
+                <ListItem button component="a">
+                  <ListItemText primary="Users"></ListItemText>
                 </ListItem>
               </NextLink>
             </List>
@@ -95,7 +105,7 @@ function AdminDashboard() {
                     <Grid item md={3}>
                       <Card raised>
                         <CardContent>
-                          <Typography variant="h2">
+                          <Typography variant="h1">
                             ${summary.ordersPrice}
                           </Typography>
                           <Typography>Sales</Typography>
@@ -112,7 +122,7 @@ function AdminDashboard() {
                     <Grid item md={3}>
                       <Card raised>
                         <CardContent>
-                          <Typography variant="h2">
+                          <Typography variant="h1">
                             {summary.ordersCount}
                           </Typography>
                           <Typography>Orders</Typography>
@@ -129,7 +139,7 @@ function AdminDashboard() {
                     <Grid item md={3}>
                       <Card raised>
                         <CardContent>
-                          <Typography variant="h2">
+                          <Typography variant="h1">
                             {summary.productsCount}
                           </Typography>
                           <Typography>Products</Typography>
@@ -146,7 +156,7 @@ function AdminDashboard() {
                     <Grid item md={3}>
                       <Card raised>
                         <CardContent>
-                          <Typography variant="h2">
+                          <Typography variant="h1">
                             {summary.usersCount}
                           </Typography>
                           <Typography>Users</Typography>
