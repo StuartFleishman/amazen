@@ -8,12 +8,12 @@ import {
 
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
-import Layout from '../components/Layout';
+import Layout from '../components/layout';
 import { Store } from '../utils/Store';
 import useStyles from '../utils/styles';
 import Cookies from 'js-cookie';
 import { Controller, useForm } from 'react-hook-form';
-import CheckoutWizard from '../components/CheckoutWizard';
+import CheckoutWizard from '../components/checkoutwizard';
 
 export default function Shipping() {
   const {

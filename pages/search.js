@@ -11,11 +11,11 @@ import {
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
-import Layout from '../components/Layout';
+import Layout from '../components/layout';
 import db from '../utils/db';
 import Product from '../models/Product';
 import useStyles from '../utils/styles';
-import ProductItem from '../components/ProductItem';
+import ProductItem from '../components/productitem';
 import { Store } from '../utils/Store';
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';

@@ -1,13 +1,13 @@
 
 import { Grid, Typography } from '@material-ui/core';
-import Layout from '../components/Layout';
+import Layout from '../components/layout';
 import db from '../utils/db';
 import Product from '../models/Product';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { Store } from '../utils/Store';
-import ProductItem from '../components/ProductItem';
+import ProductItem from '../components/productitem';
 
 
 export default function Home(props) {

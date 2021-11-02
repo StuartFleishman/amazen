@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
-import Layout from '../../components/Layout';
+import Layout from '../../components/layout';
 import useStyles from '../../utils/styles';
 import Product from '../../models/Product';
 import db from '../../utils/db';

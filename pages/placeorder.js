@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import Layout from '../components/Layout';
+import Layout from '../components/layout';
 import { Store } from '../utils/Store';
 import NextLink from 'next/link';
 import Image from 'next/image';
@@ -24,7 +24,7 @@ import {
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import useStyles from '../utils/styles';
-import CheckoutWizard from '../components/CheckoutWizard';
+import CheckoutWizard from '../components/checkoutwizard';
 import { useSnackbar } from 'notistack';
 
 import Cookies from 'js-cookie';
