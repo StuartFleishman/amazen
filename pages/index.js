@@ -1,6 +1,6 @@
 
 import { Grid, Typography } from '@material-ui/core';
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 import db from '../utils/db';
 import Product from '../models/Product';
 import axios from 'axios';
