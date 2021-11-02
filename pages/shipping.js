@@ -24,7 +24,6 @@ export default function Shipping() {
   } = useForm();
 
   const router = useRouter();
-  const { redirect } = router.query;
   const { state, dispatch } = useContext(Store);
   const { userInfo, cart: {shippingAddress} } = state;
   useEffect(() => {
