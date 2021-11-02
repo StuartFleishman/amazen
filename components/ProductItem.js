@@ -14,13 +14,16 @@ import NextLink from 'next/link';
 import Rating from '@material-ui/lab/Rating';
 
 export default function ProductItem({ product, addToCartHandler }) {
+
   return (
-    <Card>
+    <Card >
       <NextLink href={`/product/${product.slug}`} passHref>
         <CardActionArea>
           <CardMedia
             component="img"
             image={product.image}
+            width={300}
+            height={300}
             title={product.name}
           ></CardMedia>
           <CardContent>

@@ -126,7 +126,7 @@ export default function Layout({ title, description, children }) {
   return (
     <div>
       <Head>
-        <title>{title ? `${title} - Next Amazona` : 'Next Amazona'}</title>
+        <title>{title ? `${title} - amazen` : 'amazen'}</title>
         {description && <meta name="description" content={description}></meta>}
       </Head>
       <ThemeProvider theme={theme}>
@@ -143,8 +143,8 @@ export default function Layout({ title, description, children }) {
                 <MenuIcon className={classes.navbarButton} />
               </IconButton>
               <NextLink href="/" passHref>
-                <Link>
-                  <Typography className={classes.brand}>amazona</Typography>
+                <Link style={{ textDecoration: 'none' }}>
+                  <Typography className={classes.brand}>amazen</Typography>
                 </Link>
               </NextLink>
             </Box>
@@ -211,7 +211,7 @@ export default function Layout({ title, description, children }) {
                 onChange={darkModeChangeHandler}
               ></Switch>
               <NextLink href="/cart" passHref>
-                <Link>
+                <Link style={{ textDecoration: 'none' }}>
                   <Typography component="span">
                     {cart.cartItems.length > 0 ? (
                       <Badge
@@ -279,7 +279,7 @@ export default function Layout({ title, description, children }) {
         </AppBar>
         <Container className={classes.main}>{children}</Container>
         <footer className={classes.footer}>
-          <Typography>All rights reserved. Next Amazona.</Typography>
+          <Typography>All rights reserved. Amazen.</Typography>
         </footer>
       </ThemeProvider>
     </div>

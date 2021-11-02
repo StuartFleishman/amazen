@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useReducer } from 'react';
 import dynamic from 'next/dynamic';
 import Layout from '../../components/Layout';
 import { Store } from '../../utils/Store';
-import NextLink from 'next/link';
 import Image from 'next/image';
 import {
   Grid,
@@ -216,16 +215,6 @@ function Order({ params }) {
                   {shippingAddress.fullName}, {shippingAddress.address},{' '}
                   {shippingAddress.city}, {shippingAddress.postalCode},{' '}
                   {shippingAddress.country}
-                  &nbsp;
-                  {shippingAddress.location && (
-                    <Link
-                      variant="button"
-                      target="_new"
-                      href={`https://maps.google.com?q=${shippingAddress.location.lat},${shippingAddress.location.lng}`}
-                    >
-                      Show On Map
-                    </Link>
-                  )}
                 </ListItem>
                 <ListItem>
                   Status:{' '}
@@ -270,24 +259,20 @@ function Order({ params }) {
                         {orderItems.map((item) => (
                           <TableRow key={item._id}>
                             <TableCell>
-                              <NextLink href={`/product/${item.slug}`} passHref>
-                                <Link>
+                          
                                   <Image
                                     src={item.image}
                                     alt={item.name}
                                     width={50}
                                     height={50}
                                   ></Image>
-                                </Link>
-                              </NextLink>
+                         
                             </TableCell>
 
                             <TableCell>
-                              <NextLink href={`/product/${item.slug}`} passHref>
-                                <Link>
+                            
                                   <Typography>{item.name}</Typography>
-                                </Link>
-                              </NextLink>
+                              
                             </TableCell>
                             <TableCell align="right">
                               <Typography>{item.quantity}</Typography>

@@ -13,6 +13,8 @@ handler.get(async (req, res) => {
   res.send(products);
 });
 
+
+
 handler.post(async (req, res) => {
   await db.connect();
   const newProduct = new Product({
