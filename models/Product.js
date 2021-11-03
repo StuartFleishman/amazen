@@ -1,9 +1,11 @@
+import mongoose from 'mongoose';
+import User from './User';
 
-const mongoose = require("mongoose");
+
 
 const reviewSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: User.User, required: true },
     name: { type: String, required: true },
     rating: { type: Number, default: 0 },
     comment: { type: String, required: true },
@@ -34,6 +36,6 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-let Product =
+const Product =
   mongoose.models.Product || mongoose.model('Product', productSchema);
 export default Product;
