@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import '../styles/globals.css';
 import { StoreProvider } from '../utils/Store';
 
+require('../models/index')
+
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');

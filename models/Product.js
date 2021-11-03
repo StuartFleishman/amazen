@@ -5,7 +5,7 @@ import User from './User';
 
 const reviewSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: User.User, required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: User, required: true },
     name: { type: String, required: true },
     rating: { type: Number, default: 0 },
     comment: { type: String, required: true },
