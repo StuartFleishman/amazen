@@ -144,7 +144,7 @@ export default function Layout({ title, description, children }) {
               </IconButton>
               <NextLink href="/" passHref>
                 <Link style={{ textDecoration: 'none' }}>
-                  <Typography className={classes.brand}>amazen</Typography>
+                  <Typography className={classes.brand}>amaZen</Typography>
                 </Link>
               </NextLink>
             </Box>
