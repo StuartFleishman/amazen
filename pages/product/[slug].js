@@ -55,7 +55,7 @@ export default function ProductScreen(props) {
       fetchReviews();
     } catch (err) {
       setLoading(false);
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      // enqueueSnackbar(getError(err), { variant: 'error' });
     }
   };
 
