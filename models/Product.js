@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-const User = require("./User")
+import User from './User';
+
+
 
 const reviewSchema = new mongoose.Schema(
   {
