@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import '../styles/globals.css';
 import { StoreProvider } from '../utils/Store';
 
-require('../models/index')
+require('./models')
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
