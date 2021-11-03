@@ -28,6 +28,7 @@ export default function ProductScreen(props) {
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   const { product } = props;
+  console.log(product)
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -55,7 +56,7 @@ export default function ProductScreen(props) {
       fetchReviews();
     } catch (err) {
       setLoading(false);
-      // enqueueSnackbar(getError(err), { variant: 'error' });
+      
     }
   };
 
@@ -64,12 +65,12 @@ export default function ProductScreen(props) {
       const { data } = await axios.get(`/api/products/${product._id}/reviews`);
       setReviews(data);
     } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      console.log(err)
     }
   };
   useEffect(() => {
     fetchReviews();
-  }, []);
+  }, [fetchReviews]);
 
   if (!product) {
     return <div>Product Not Found</div>;
