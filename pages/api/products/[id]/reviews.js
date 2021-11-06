@@ -11,7 +11,7 @@ const handler = nextConnect({
   onError,
 });
 
-handler.use(isAuth);
+
 
 handler.get(async (req, res) => {
   await db.connect();
@@ -26,7 +26,7 @@ handler.get(async (req, res) => {
 
 
 
-handler.post(async (req, res) => {
+handler.use(isAuth).post(async (req, res) => {
   await db.connect();
   const product = await Product.findById(req.query.id);
   if (product) {
