@@ -28,7 +28,7 @@ export default function ProductScreen(props) {
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   const { product } = props;
-  
+
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -53,8 +53,8 @@ export default function ProductScreen(props) {
       );
       setLoading(false);
       enqueueSnackbar('Review submitted successfully', { variant: 'success' });
-      setComment('')
-      setRating(0)
+      setComment('');
+      setRating(0);
       fetchReviews();
     } catch (err) {
       setLoading(false);
@@ -67,7 +67,7 @@ export default function ProductScreen(props) {
       const { data } = await axios.get(`/api/products/${product._id}/reviews`);
       setReviews(data);
     } catch (err) {
-      enqueueSnackbar(getError(err), { variant: 'error' });
+      console.error(err);
     }
   };
   useEffect(() => {
