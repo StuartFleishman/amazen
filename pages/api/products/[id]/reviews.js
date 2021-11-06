@@ -9,8 +9,11 @@ const handler = nextConnect({
   onError,
 });
 
+
+
 handler.get(async (req, res) => {
-  db.connect();
+  (async function () {
+  await db.connect();
   const product = await Product.findById(req.query.id);
   db.disconnect();
   if (product) {
@@ -18,9 +21,10 @@ handler.get(async (req, res) => {
   } else {
     res.status(404).send({ message: 'Product not found' });
   }
+})
 });
 
-handler.use(isAuth).post(async (req, res) => {
+handler.post(async (req, res) => {
   await db.connect();
   const product = await Product.findById(req.query.id);
   if (product) {

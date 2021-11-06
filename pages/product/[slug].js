@@ -61,6 +61,7 @@ export default function ProductScreen(props) {
   };
 
   const fetchReviews = async () => {
+    debugger
     try {
       const { data } = await axios.get(`/api/products/${product._id}/reviews`);
       setReviews(data);
