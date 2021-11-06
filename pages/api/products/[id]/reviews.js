@@ -12,7 +12,6 @@ const handler = nextConnect({
 
 
 handler.get(async (req, res) => {
-  (async function () {
   await db.connect();
   const product = await Product.findById(req.query.id);
   db.disconnect();
@@ -21,7 +20,6 @@ handler.get(async (req, res) => {
   } else {
     res.status(404).send({ message: 'Product not found' });
   }
-})
 });
 
 handler.post(async (req, res) => {
