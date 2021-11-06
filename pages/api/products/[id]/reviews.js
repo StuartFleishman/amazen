@@ -5,11 +5,13 @@ import db from '../../../../utils/db';
 import Product from '../../../../models/Product';
 import { isAuth } from '../../../../utils/auth';
 
+
+
 const handler = nextConnect({
   onError,
 });
 
-
+handler.use(isAuth);
 
 handler.get(async (req, res) => {
   await db.connect();
@@ -21,6 +23,8 @@ handler.get(async (req, res) => {
     res.status(404).send({ message: 'Product not found' });
   }
 });
+
+
 
 handler.post(async (req, res) => {
   await db.connect();
