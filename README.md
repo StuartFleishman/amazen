@@ -1,4 +1,4 @@
-Amazen is a e-commerce store for buying anything Zen!
+Amazen is an e-commerce store for buying anything Zen!
 
 Run it Locally
 $ git clone https://github.com/basir/next-amazona
